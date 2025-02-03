@@ -15,12 +15,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne(optional = true) // Allows null values for custom orders
+    @JoinColumn(name = "product_id")
     private Product product;
+
+    private String customProductName;  // For custom orders
+    private String customProductDescription;
+    private double customProductPrice;
 
     private int quantity;
     private double totalPrice;
     private LocalDateTime orderDate;
     private String customerName;
+
+    private String orderStatus; // PENDING, PROCESSING, COMPLETED
 }

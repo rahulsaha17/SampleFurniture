@@ -1,5 +1,6 @@
 package com.example.SampleFurniture.Controller;
 
+import com.example.SampleFurniture.DTO.OrderRequest;
 import com.example.SampleFurniture.Entity.Order;
 import com.example.SampleFurniture.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-
     private final OrderService orderService;
 
     @Autowired
@@ -35,9 +35,15 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order savedOrder = orderService.saveOrder(order);
+    public ResponseEntity<Order> createOrder(@RequestBody OrderRequest request) {
+        Order savedOrder = orderService.saveOrder(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOrder);
+    }
+
+    @PutMapping("/{orderId}/status")
+    public ResponseEntity<Order> updateOrderStatus(@PathVariable Long orderId, @RequestParam String status) {
+        Order updatedOrder = orderService.updateOrderStatus(orderId, status);
+        return ResponseEntity.ok(updatedOrder);
     }
 
     @DeleteMapping("/{id}")
